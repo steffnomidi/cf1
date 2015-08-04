@@ -19,6 +19,9 @@
 	
 <!-- собственно ради чего сыр-бор -->
 	<style>
+	.scf { position: relative; }
+	.thank { position: absolute; background: #ccc; top:0; bottom:0; left:0; right: 0; padding: 20px; text-align: center; display: none;}
+	.thank-close {position: absolute; padding: 20px 25px; top: 0; right: 0; cursor: pointer; font-size: 30px; font-weight: bold;}
 	form { width: 60%; margin: 0 auto;}
 	input{ width: 100%; margin-top: 20px; text-align: center;}
 	button{ width: 33.33%; float: left; margin-bottom: 20px;}
@@ -40,10 +43,16 @@
 		
 		<input type="hidden" name="price" class="input_price" value="20 — 50 млн. руб.">
 		<button type="button" class="price-button" data-pricetext="до 20 млн. руб.">до 20 млн. руб.</button>
-		<button type="button" class="price-button" data-pricetext="20 — 50 млн. руб." disabled>20 — 50 млн. руб.</button>
+		<button type="button" class="price-button default" data-pricetext="20 — 50 млн. руб." disabled>20 — 50 млн. руб.</button>
 		<button type="button" class="price-button" data-pricetext="более 50 млн. руб.">более 50 млн. руб.</button>
 		<input type="submit" value="отправить заявку">
 	</form>
+	
+	<div class="thank">
+		<h2>Спасибо!</h2>
+		<p>Ну и другие хорошие слова.</p>
+		<span class="thank-close">×</span>
+	</div>
 	
 	<script>
 	jQuery(document).ready(function($) {
@@ -74,12 +83,20 @@
 			} else {
 		
 				$.post( "remailer_677647634.php", $('form').serialize() ).done( function( data ) {
-					alert( "Отправлено: " + data );
+					$('.thank').fadeIn(100 );
 				});
 			} 
 			
 			return false;
 		});
+		
+		$('.thank-close').click(function() {
+			$('.price-button').removeAttr('disabled');
+			$('.thank').fadeOut(100);
+			$('input[type=text]').val('');
+			$('input[type=hidden]').val('20 — 50 млн. руб.');
+			$('.price-button.default').attr('disabled',true);
+		})
 		
 	});
 
